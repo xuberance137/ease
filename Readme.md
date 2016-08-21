@@ -19,26 +19,45 @@ Sample Output
 ---------------------
 
 Importing TSV to CSV
+
 Importing CSV to JSON
+
 Loading CSV to Pandas DataFrame
+
 Initializing Test Scoring Object
+
 Loading Data for Test Scoring Setup
+
 Total number of data points as input:  17207
+
 Model Creation
+
 Overall Features Size:  (50, 505)
+
 Feature Set Size (50, 505)
+
 Score Set Size 50
+
 Prediction Set Size 50
+
 model score input :  [0, 2, 1, 0, 0, 1, 0, 0, 1, 3, 1, 0, 1, 0, 0, 1, 3, 2, 0, 1, 0, 0, 2, 0, 2, 0, 2, 1, 1, 0, 0, 1, 2, 3, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 1, 2, 3, 3, 2, 1]
+
 model prediction  :  [1, 2, 0, 0, 0, 1, 0, 0, 2, 2, 2, 0, 0, 0, 2, 0, 0, 2, 0, 2, 1, 0, 1, 0, 3, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 0, 0, 2, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0]
+
 model KAPPA       :  0.30404523706
+
 model MAE         :  0.8
+
 Writing Feature Data
+
 Model Based Grading
+
 Overall Features Size:  (1, 505)
-/Users/gopal/projects/learning/ease/ease/grade.py:180: DeprecationWarning: using a non-integer number instead of an integer will result in an error in the future
-  raw_confidence=model.predict_proba(grader_feats)[0,(float(score)-float(min_score))]
+
 grader text input :  Pandas & Koalas are similar because they are both specialist who mostly eat herbs. But both of these species are different from pythons because Pandas and Koalas aren't as dangerous and they don't live in the everglades. Also pandas can live in arid weather and pythons can not.
+
 grader score      :  0
+
 grader confidence :  0.998105976275
+
 grader feedback   :  {'spelling': 'Spelling: Ok.', 'grammar': 'Grammar: Ok.', 'markup-text': "pandas <bg>koalas are similar because</bg> they are both specialist who mostly eat herbs . but both of these species are different from pythons because pandas and koalas aren't as dangerous and they don't live in the everglades <bg>. also pandas can</bg> live in arid weather and pythons can not ."}
