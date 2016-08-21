@@ -47,7 +47,6 @@ def create(text,score,prompt_string, dump_data=False):
     score - a list of integers containing score values
     prompt_string - the common prompt for the set of essays
     """
-
     if dump_data:
         dump_input_data(text, score)
 
@@ -55,7 +54,7 @@ def create(text,score,prompt_string, dump_data=False):
     #Initialize a results dictionary to return
     results = {'errors': [],'success' : False, 'cv_kappa' : 0, 'cv_mean_absolute_error': 0,
                'feature_ext' : "", 'classifier' : "", 'algorithm' : algorithm,
-               'score' : score, 'text' : text, 'prompt' : prompt_string}
+               'score' : score, 'text' : text, 'prediction' : [], 'prompt' : prompt_string}
 
     if len(text)!=len(score):
         msg = "Target and text lists must be same length."
@@ -79,6 +78,7 @@ def create(text,score,prompt_string, dump_data=False):
         results['classifier']=classifier
         results['algorithm'] = algorithm
         results['success']=True
+        results['prediction'] = cv_error_results['prediction']
     except:
         msg = "feature extraction and model creation failed."
         results['errors'].append(msg)

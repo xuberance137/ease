@@ -184,6 +184,8 @@ class FeatureExtractor(object):
         prompt_feats = self.gen_prompt_feats(e_set)
         overall_feats = numpy.concatenate((length_feats, prompt_feats, bag_feats), axis=1)
         overall_feats = overall_feats.copy()
+        print "Overall Features Size: ", overall_feats.shape
+        #print "Overall Features : ", overall_feats
 
         return overall_feats
 

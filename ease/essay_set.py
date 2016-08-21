@@ -100,7 +100,12 @@ class EssaySet(object):
             porter = nltk.PorterStemmer()
             por_toks = " ".join([porter.stem(w) for w in self._tokens[len(self._tokens) - 1]])
             self._clean_stem_text.append(por_toks)
-
+            # print "Raw Essay Text : ", essay_text
+            # print "Stem Text : ", self._clean_stem_text
+            # print "Tokens : ", self._tokens
+            # print "POS : ", self._pos
+            # print "Markup Text : ", self._markup_text
+            
             ret = "text: " + self._text[len(self._text) - 1] + " score: " + str(essay_score)
         else:
             raise util_functions.InputError(essay_text, "arguments need to be in format "

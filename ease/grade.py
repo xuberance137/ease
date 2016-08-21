@@ -39,7 +39,7 @@ def grade(grader_data,submission):
     """
 
     #Initialize result dictionary
-    results = {'errors': [],'tests': [],'score': 0, 'feedback' : "", 'success' : False, 'confidence' : 0}
+    results = {'errors': [],'tests': [], 'text': [], 'score': 0, 'feedback' : "", 'success' : False, 'confidence' : 0}
     has_error=False
 
     grader_set=EssaySet(essaytype="test")
@@ -47,6 +47,7 @@ def grade(grader_data,submission):
 
     model, extractor = get_classifier_and_ext(grader_data)
 
+    results['text'] = str(submission)
     #This is to preserve legacy functionality
     if 'algorithm' not in grader_data:
         grader_data['algorithm'] = util_functions.AlgorithmTypes.classification
@@ -177,6 +178,7 @@ def get_confidence_value(algorithm,model,grader_feats,score, scores):
     if algorithm == util_functions.AlgorithmTypes.classification and hasattr(model, "predict_proba"):
         #If classification, predict with probability, which gives you a matrix of confidences per score point
         raw_confidence=model.predict_proba(grader_feats)[0,(float(score)-float(min_score))]
+        #print score, min_score, raw_confidence
         #TODO: Normalize confidence somehow here
         confidence=raw_confidence
     elif hasattr(model, "predict"):

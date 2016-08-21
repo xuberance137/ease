@@ -1,6 +1,7 @@
 #Provides interface functions to create and save models
 
 import numpy
+#numpy.set_printoptions(threshold=numpy.nan)
 import re
 import nltk
 import sys
@@ -68,7 +69,7 @@ def read_in_test_data_twocolumn(filename,sep=","):
     return score, text
 
 
-def create_essay_set(text, score, prompt_string, generate_additional=True):
+def create_essay_set(text, score, prompt_string, generate_additional=False):
     """
     Creates an essay set from given data.
     Text should be a list of strings corresponding to essay text.
@@ -93,20 +94,37 @@ def get_cv_error(clf,feats,scores):
     feats - features to feed into the classified and cross validate over
     scores - scores associated with the features -- feature row 1 associates with score 1, etc.
     """
-    results={'success' : False, 'kappa' : 0, 'mae' : 0}
+    results={'success' : False, 'kappa' : 0, 'mae' : 0, 'prediction' : []}
     try:
         cv_preds=util_functions.gen_cv_preds(clf,feats,scores)
+        
+        print "Feature Set Size", feats.shape
+        print "Score Set Size", len(scores)
+        print "Prediction Set Size", len(cv_preds)
+        #
+        # print "features : ", feats
+        #
+        # for index in range(len(scores)):
+        #     print "(score, prediction) : ", scores[index] , numpy.abs(numpy.array(cv_preds[index]))
+        #
         err=numpy.mean(numpy.abs(numpy.array(cv_preds)-scores))
         kappa=util_functions.quadratic_weighted_kappa(list(cv_preds),scores)
+               
         results['mae']=err
         results['kappa']=kappa
         results['success']=True
+        results['prediction'] = cv_preds
     except ValueError as ex:
         # If this is hit, everything is fine.  It is hard to explain why the error occurs, but it isn't a big deal.
         msg = u"Not enough classes (0,1,etc) in each cross validation fold: {ex}".format(ex=ex)
         log.debug(msg)
     except:
         log.exception("Error getting cv error estimates.")
+
+
+    # print "MAE : ", results['mae']
+    # print "KAPPA : ", results['kappa']
+    # print "Prediction :", results['prediction']
 
     return results
 
@@ -179,7 +197,11 @@ def extract_features_and_generate_model(essays, algorithm=util_functions.Algorit
 
     clf,clf2 = get_algorithms(algorithm)
 
-    cv_error_results=get_cv_error(clf2,train_feats,essays._score)
+    cv_error_results =get_cv_error(clf2,train_feats,essays._score)
+
+    # print "MAE : ", cv_error_results['mae']
+    # print "KAPPA : ", cv_error_results['kappa']
+    # print "Prediction Model: ", cv_error_results['prediction']
 
     try:
         clf.fit(train_feats, set_score)
@@ -189,6 +211,8 @@ def extract_features_and_generate_model(essays, algorithm=util_functions.Algorit
         set_score[1]=0
         clf.fit(train_feats, set_score)
 
+
+    
     return f, clf, cv_error_results
 
 def dump_model_to_file(prompt_string, feature_ext, classifier, text, score, model_path):
